@@ -29,6 +29,18 @@ class ModelSummaryExtension extends Autodesk.Viewing.Extension {
         return true;
     }
 
+    getAllLeafComponents(callback) {
+        this.viewer.getObjectTree(function (tree) {
+            let leaves = [];
+            tree.enumNodeChildren(tree.getRootId(), function (dbId) {
+                if (tree.getChildCount(dbId) === 0) {
+                    leaves.push(dbId);
+                }
+            }, true);
+            callback(leaves);
+        });
+    }
+
     onToolbarCreated() {
         // Create a new toolbar group if it doesn't exist
         this._group = this.viewer.toolbar.getControl('allMyAwesomeExtensionsToolbar');
@@ -57,7 +69,7 @@ class ModelSummaryExtension extends Autodesk.Viewing.Extension {
             // getAllLeafComponents function is defined at the bottom
             this.getAllLeafComponents((dbIds) => {
                 // Now for leaf components, let's get some properties and count occurrences of each value
-                const filteredProps = ['Material'];
+                const filteredProps = ['Name'];
                 // Get only the properties we need for the leaf dbIds
                 this.viewer.model.getBulkProperties(dbIds, filteredProps, (items) => {
                     // Iterate through the elements we found
