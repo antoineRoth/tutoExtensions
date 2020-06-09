@@ -35,7 +35,9 @@ class ColorByNameExtension extends Autodesk.Viewing.Extension {
         this._button.onClick = (ev) => {
             console.log(this.viewer.model);
             var it = this.viewer.model.getInstanceTree();
+            var ot = this.viewer.model.getData().objectTree;
             console.log(it);
+            console.log(ot);
             this.viewer.impl.setSelectionColor(new THREE.Color(1,0,0));
             this.viewer.select(40, this.viewer.model);
 
